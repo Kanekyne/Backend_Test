@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -13,15 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $categories = Category::all();
+        return response()->json($categories, Response::HTTP_OK);
     }
 
     /**
@@ -29,38 +23,36 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
-    }
+        $category = Category::create($request->all());
+        return response()->json([
+            'message' => "Categoria creada exitosamente",
+            'category' => $category
+        ], Response::HTTP_CREATED);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(storeCategoryRequest $request, $category)
     {
-        //
+        $category=Category::find($category);
+        $category->update($request->only('name', 'description'));
+        return response()->json([
+            'message'=>"La categoria ha sido actualizada",
+            'category'=>$category,
+        ], Response::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($category)
     {
-        //
+        $category=Category::find($category);
+        $category->delete();
+        return response()->json([
+            'message'=>"La categoria fue elminida con exito"
+        ], Response::HTTP_OK);
     }
 }

@@ -5,23 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
-    /**
+
+        /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $products = Product::all();
+        return response()->json($products, Response::HTTP_OK);
     }
 
     /**
@@ -29,38 +24,37 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
-    }
+        $product = Product::create($request->all());
+        return response()->json([
+            'message' => "El producto fue creado exitosamente",
+            'product' => $product,
+        ], Response::HTTP_CREATED);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $product)
     {
-        //
+        $product=Product::find($product);
+        $product->update($request->only('name', 'description'));
+        return response()->json([
+            'message'=>"El producto ha sido actualizada",
+            'category'=>$product,
+        ], Response::HTTP_CREATED);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($product)
     {
-        //
+        $product=Product::find($product);
+        $product->delete();
+        return response()->json([
+            'message'=>"El producto fue elminido con exito"
+        ], Response::HTTP_OK);
     }
+
 }
