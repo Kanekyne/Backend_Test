@@ -13,9 +13,25 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('description');
+            $table->integer('quantity');
+
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')
+            ->references('id')->on('categories')
+            ->onDelete('set null');
+
             $table->timestamps();
         });
     }
+
+
+
+//     id (primary key)
+// name
+// description
+// quantity
+// category_id (foreign key references categories.id)
 
     /**
      * Reverse the migrations.
