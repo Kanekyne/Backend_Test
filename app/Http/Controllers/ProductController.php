@@ -64,6 +64,8 @@ class ProductController extends Controller
         })->sum('quantity');
 
         return response()->json(['total' => $total]);
+
+        // esto es para ver si los commits en esta rama sirven?
     }
 
 }
