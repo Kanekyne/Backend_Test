@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DialogflowController;
 
 
 
@@ -33,3 +34,11 @@ Route::POST('categories/store', [CategoryController::class, 'store'])->name('cat
 Route::PATCH('categories/update/{category}', [CategoryController::class, 'update'])->name('categories.update');
 // Route::PUT('categories/update/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::DELETE('categories/delete/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//                                            DIALOGFLOW
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+Route::POST('/dialog', [DialogflowController::class, 'webhook'])->name('dialog');
