@@ -23,7 +23,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $category = Category::create($request->all());
+        $category = Category::create($request->validated());
+        // $category = Category::create($request->all());
         return response()->json([
             'message' => "Categoria creada exitosamente",
             'category' => $category
@@ -34,10 +35,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(storeCategoryRequest $request, $category)
+    public function update(updateCategoryRequest $request, $category)
     {
         $category=Category::find($category);
-        $category->update($request->only('name', 'description'));
+        $category->update($request->validated());
+        // $category->update($request->only('name', 'description'));
         return response()->json([
             'message'=>"La categoria ha sido actualizada",
             'category'=>$category,

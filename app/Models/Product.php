@@ -9,12 +9,14 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'quantity',
-        'price',
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'description',
+    //     'quantity',
+    //     'price',
+    // ];
+
+    protected $guarded = [];
 
     public function category(){
         return $this->belongsTo('App\Models\Category');

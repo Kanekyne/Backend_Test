@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\Guard;
 
 class Category extends Model
 {
@@ -12,9 +13,11 @@ class Category extends Model
     public function products()      {
         return $this->hasMany('App\Models\Product');
     }
-    
-    protected $fillable = [
-        'name',
-        'description',
-    ];
+
+    // protected $fillable = [
+    //     'name',
+    //     'description',
+    // ];
+
+    protected $guarded = [];
 }
