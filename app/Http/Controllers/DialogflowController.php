@@ -16,63 +16,73 @@ use DB;
 class DialogflowController extends Controller
 {
 
-    public function process_1(Request $request)
-    {
-
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=C:\Apache24\htdocs\Backend_Test\credentials\try_3_1\try-laravel-3-nwsv-e1e8309d531e.json');
-
-        $projectId = 'try-laravel-3-nwsv';
-        $languageCode = 'es';
-
-        $sessionsClient = new SessionsClient();
-        $session = $sessionsClient->sessionName($projectId, uniqid());
-
-
-    }
-
     public function quantity(Request $request)
     {
 
 
-        $intent = $request->input('queryResult.intent.displayName');
-        $category = $request->input('queryResult.parameters.category');
+        ###################  region  #######################
 
+        $intent = $request->input('queryResult.intent.displayName'); //Extraccion de la intent que esta enviando la solicitud
+        $category = $request->input('queryResult.parameters.category'); //Extraccion del valor del parametro
         if (empty($category)) {
             return response()->json(['fulfillmentText' => 'La categoría no puede estar vacía']);
         }
+        $response = []; //Inicializacion del response
 
-        $response = [];
+        #################  Endregion  ######################
+
 
         switch ($intent) {
+
             case 'getProductQuantity':
 
-                $names = Category::pluck('name')->toArray();
-                $names_min = array_map('strtolower', $names);
-                $category_part = explode(" ", $category);
-                $category_min = array_map('strtolower', $category_part);
-                $resultado = array_intersect($names_min, $category_min);
-                $categoryName_NS = reset($resultado);
-                $categoryName = ucfirst($categoryName_NS);
+                ###################  region  #######################
+
+                $names = Category::pluck('name')->toArray(); //Extraccion de las categorias existentes en DB
+                $names_min = array_map('strtolower', $names); //Conversion de todal las categorias a minusculas
+                $category_part = explode(" ", $category); //Separacion del valor que vino en el parametro {category} de Dialogflow
+                $category_min = array_map('strtolower', $category_part); //Formateo de todo el array del valor del parametro {category} a minusculas
+                $resultado = array_intersect($names_min, $category_min); //Busqueda de coincidencias entre los array de category de DB y el de el parametro {category}
+                $categoryName_NS = reset($resultado); //Conversion de la variable $resultado a string y establecimiento del puntero del arra en el primer indice
+                $categoryName = ucfirst($categoryName_NS); //Formateando la palabra $categoryName_NS para que la primera letra sea mayuscula
+
+                #################  Endregion  ######################
 
                 if (!empty($categoryName)) {
-                    $categoria = Category::where('name', $categoryName)->first();
+                    $categoria = Category::where('name', $categoryName)->first(); //Busqueda de match en la DB con el parametro {category}
                     if ($categoria) {
+
+                        //Busqueda en la tabla Product, en la columna category_id
+                        //  si hay algun registro que coincida con el valor del parametro
+                        //  {category}, si es asi, suma todos los registros de la columna
+                        //   quantity de los productos que pertenezcan a esa categoria.
                         $total = Product::where('category_id', $categoria->id)->sum('quantity');
-                        return response()->json(['fulfillmentText' => 'Hay ' . $total . ' productos en la categoría ' . $categoryName . '.']);
+                        // return response()->json(['fulfillmentText' => 'Hay ' . $total . ' productos en la categoría ' . $categoryName . '.']);
+                        $response = (['fulfillmentText' => 'Hay ' . $total . ' productos en la categoría ' . $categoryName . '.']);
                     } else {
-                        response()->json(['fulfillmentText' => 'Lo siento, no pude encontrar la categoría' . $categoryName . '.']);
+                        $response = (['fulfillmentText' => 'Lo siento, no pude encontrar la categoría' . $categoryName . '.']);
                     }
                 } else {
-                    return response()->json(['fulfillmentText' => 'Ingrese una categoria valida porfavor.']);
+
+                    $names = implode(', ', $names); //Conversion del array a un string separado por ","
+                    $response = [
+                        'fulfillmentMessages' => [
+                            ['text' => ['text' => ['Ingrese una categoría válida por favor.']]],
+                            ['text' => ['text' => ['Contamos con estas categorías: ' . $names]]],
+                            ['text' => ['text' => ['Recuerde SIEMPRE escribir el nombre de la categoria que quiere consultar en SINGULAR.']]],
+
+
+                        ]
+                    ];
                 }
+
+                #################  Endregion  ######################
 
                 break;
             default:
-                $response['fulfillmentText'] = "Lo siento, no entendí tu solicitud.";
+                $response = ['fulfillmentText' => "Lo siento, no entendí tu solicitud."];
                 break;
         }
-
-        // Devuelve la respuesta
         return response()->json($response);
     }
 

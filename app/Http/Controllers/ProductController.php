@@ -60,7 +60,7 @@ class ProductController extends Controller
     }
 
 
-    // YO
+
     public function quantity($category)
     {
         $total = Product::whereHas('category', function ($query) use ($category) {
@@ -71,7 +71,7 @@ class ProductController extends Controller
 
     }
 
-    // COPILOT
+
     public function quantity_name($categoryName)
     {
         $categoria = Category::where('name', $categoryName)->first();

@@ -14,10 +14,6 @@ class Category extends Model
         return $this->hasMany('App\Models\Product');
     }
 
-    // protected $fillable = [
-    //     'name',
-    //     'description',
-    // ];
 
     protected $guarded = [];
 }
