@@ -24,7 +24,6 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $category = Category::create($request->validated());
-        // $category = Category::create($request->all());
         return response()->json([
             'message' => "Categoria creada exitosamente",
             'category' => $category
@@ -37,12 +36,11 @@ class CategoryController extends Controller
      */
     public function update(updateCategoryRequest $request, $category)
     {
-        $category=Category::find($category);
+        $category = Category::find($category);
         $category->update($request->validated());
-        // $category->update($request->only('name', 'description'));
         return response()->json([
-            'message'=>"La categoria ha sido actualizada",
-            'category'=>$category,
+            'message' => "La categoria ha sido actualizada",
+            'category' => $category,
         ], Response::HTTP_CREATED);
     }
 
@@ -51,10 +49,10 @@ class CategoryController extends Controller
      */
     public function destroy($category)
     {
-        $category=Category::find($category);
+        $category = Category::find($category);
         $category->delete();
         return response()->json([
-            'message'=>"La categoria fue elminida con exito"
+            'message' => "La categoria fue elminida con exito"
         ], Response::HTTP_OK);
     }
 }

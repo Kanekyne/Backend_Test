@@ -21,18 +21,16 @@ Route::GET('/products/list', [ProductController::class, 'index'])->name('product
 Route::POST('/products/store', [ProductController::class, 'store'])->name('product.store');
 Route::PATCH('/products/update/{product}', [ProductController::class, 'update'])->name('product.update');
 Route::DELETE('/products/delete/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
-Route::GET('/products/quantity/{category}', [ProductController::class, 'quantity'])->name('product.quantity');
-
+Route::POST('/products/quantity/{category}', [ProductController::class, 'quantity'])->name('product.quantity');
+Route::GET('/products/quantity/{categoryName}', [ProductController::class, 'quantity_name'])->name('product.quantity');
 
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //                                            CATEGORY
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-
 Route::GET('/categories/list', [CategoryController::class, 'index'])->name('categories.list');
 Route::POST('categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::PATCH('categories/update/{category}', [CategoryController::class, 'update'])->name('categories.update');
-// Route::PUT('categories/update/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::DELETE('categories/delete/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 
@@ -40,5 +38,6 @@ Route::DELETE('categories/delete/{category}', [CategoryController::class, 'destr
 //                                            DIALOGFLOW
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+// Route::POST('/dialogflow', [DialogflowController::class, 'process']); //COPILOT
+Route::POST('/dialogflow', [DialogflowController::class, 'quantity']); //COPILOT
 
-Route::POST('/dialog', [DialogflowController::class, 'webhook'])->name('dialog');
