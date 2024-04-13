@@ -24,13 +24,14 @@ class DialogflowController extends Controller
 
         $intent = $request->input('queryResult.intent.displayName'); //Extraccion de la intent que esta enviando la solicitud
         $category = $request->input('queryResult.parameters.category'); //Extraccion del valor del parametro
-        if (empty($category)) {
+        if ($intent == 'getProductQuantity' && empty($category)) {
             return response()->json(['fulfillmentText' => 'La categoría no puede estar vacía']);
         }
         $response = []; //Inicializacion del response
 
         #################  Endregion  ######################
 
+        $names = Category::pluck('name')->toArray(); //Extraccion de las categorias existentes en DB
 
         switch ($intent) {
 
@@ -38,7 +39,6 @@ class DialogflowController extends Controller
 
                 ###################  region  #######################
 
-                $names = Category::pluck('name')->toArray(); //Extraccion de las categorias existentes en DB
                 $names_min = array_map('strtolower', $names); //Conversion de todal las categorias a minusculas
                 $category_part = explode(" ", $category); //Separacion del valor que vino en el parametro {category} de Dialogflow
                 $category_min = array_map('strtolower', $category_part); //Formateo de todo el array del valor del parametro {category} a minusculas
@@ -79,6 +79,22 @@ class DialogflowController extends Controller
                 #################  Endregion  ######################
 
                 break;
+
+            case 'Inicio':
+                $names = implode(', ', $names); //Conversion del array a un string separado por ","
+                $response = [
+                    'fulfillmentMessages' => [
+                        ['text' => ['text' => ['Hola, soy un Bot creado para ayudarte a saber cuantos productos de una categoría especifica hay, recuerda hacer preguntas como:']]],
+                        ['text' => ['text' => ['Cuanto (la categoría por la que quieres preguntar) hay?']]],
+                        ['text' => ['text' => ['Cuanta (la categoría por la que quieres preguntar) hay?']]],
+                        ['text' => ['text' => ['Contamos con estas categorías: ' . $names]]],
+                        ['text' => ['text' => ['Recuerde SIEMPRE escribir el nombre de la categoria que quiere consultar en SINGULAR.']]],
+
+
+                    ]
+                ];
+                break;
+
             default:
                 $response = ['fulfillmentText' => "Lo siento, no entendí tu solicitud."];
                 break;
