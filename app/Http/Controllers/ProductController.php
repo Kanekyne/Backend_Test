@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -18,6 +19,7 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json($products, Response::HTTP_OK);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -57,6 +59,8 @@ class ProductController extends Controller
         ], Response::HTTP_OK);
     }
 
+
+
     public function quantity($category)
     {
         $total = Product::whereHas('category', function ($query) use ($category) {
@@ -65,7 +69,22 @@ class ProductController extends Controller
 
         return response()->json(['total' => $total]);
 
-        // esto es para ver si los commits en esta rama sirven?
     }
 
+
+    public function quantity_name($categoryName)
+    {
+        $categoria = Category::where('name', $categoryName)->first();
+        if ($categoria) {
+            $total = Product::where('category_id', $categoria->id)->sum('quantity');
+            $i = Category::where('name', $categoryName);
+            echo "El ID de la categoría $categoryName es: {$categoria->id}" . "\n";
+            return response()->json(['total' => $total]);
+        } else {
+            dd($categoria);
+        }
+    }
 }
+
+
+
