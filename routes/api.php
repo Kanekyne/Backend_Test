@@ -54,6 +54,5 @@ Route::resource('categories', CategoryController::class)->only([
 //                                            DIALOGFLOW
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-// Route::POST('/dialogflow', [DialogflowController::class, 'process']); //COPILOT
-Route::POST('/dialogflow', [DialogflowController::class, 'quantity']); //COPILOT
+Route::POST('/dialogflow', [DialogflowController::class, 'quantity']);
 

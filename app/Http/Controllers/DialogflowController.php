@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 // require 'vendor/autoload.php';
 use Illuminate\Http\Request;
-use Google\Cloud\Dialogflow\V2\SessionsClient;
-use Google\Cloud\Dialogflow\V2\TextInput;
-use Google\Cloud\Dialogflow\V2\QueryInput;
 use App\Models\Category;
 use App\Models\Product;
-use DB;
 
 
 
