@@ -50,7 +50,7 @@
         <h2>Product Actions</h2>
         <div class="btn-container">
             <a href="{{ route('products.index') }}" class="btn">List Product</a>
-            <a href="{{ route('category.list') }}" class="btn">List Categories</a>
+            <a href="{{ route('categories.index') }}" class="btn">List Categories</a>
             <p class="message">Esta es solamente una vista inicial y como tal solo sirve para redirigirte a la lista de elementos que están dentro de la DB con la que se conecta la API. Si quiere editar o alterar de alguna forma la DB, esta no es la forma adecuada de hacerlo.</p>
         </div>
     </div>

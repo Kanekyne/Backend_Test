@@ -19,11 +19,11 @@ return new class extends Migration
         });
 
         DB::table('categories')->insert([
-            ['name' => 'Fruta', 'description' => 'Estan recien cosechadas'],
-            ['name' => 'Tuberculo', 'description' => 'Extraidos de la sabana bogotana'],
-            ['name' => 'Hortaliza', 'description' => 'La mayoria son esfericas'],
-            ['name' => 'Verdura', 'description' => 'Ni idea de para que sirvan'],
-            ['name' => 'Grano', 'description' => 'El arroz es rraro'],
+            ['name' => 'Fruta', 'description' => 'Estan recien cosechadas', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Tuberculo', 'description' => 'Extraidos de la sabana bogotana', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Hortaliza', 'description' => 'La mayoria son esfericas', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Verdura', 'description' => 'Ni idea de para que sirvan', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Grano', 'description' => 'El arroz es rraro', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
